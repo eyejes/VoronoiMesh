@@ -17,7 +17,11 @@ public class VoronoiMeshProject extends PApplet {
 	float[][] points = new float[3][2];
 	Voronoi myVoronoi;
 	int pointCounter;
-
+	float easing = (float)0.1;
+	float targetX = 0;
+	float targetY = 0;
+	float threshold = 25;
+	
 	public void setup() {
 
 		pointsArray.add((float) 200);
@@ -27,15 +31,15 @@ public class VoronoiMeshProject extends PApplet {
 		pointsArray.add((float) 320);
 		pointsArray.add((float) 113);
 
-		pointCounter = pointsArray.toArray().length - 1;
-
+		pointCounter = pointsArray.toArray().length/2;
+		println(pointCounter);
 		size(displayWidth, displayHeight);
 	}
 
 	public void draw() {
 
 		points = new float[(pointsArray.size() / 2)][2];
-
+		
 		for (int i = 0; i < pointsArray.size(); i = i + 2) {
 			points[i / 2][0] = pointsArray.get(i);
 			points[i / 2][1] = pointsArray.get(i + 1);
@@ -50,7 +54,7 @@ public class VoronoiMeshProject extends PApplet {
 			fill(0);
 			strokeWeight(5);
 			stroke(200);
-			if (i == pointCounter / 2) {
+			if (i == pointCounter - 1) {
 				fill(255);
 			}
 			myRegions[i].draw(this); // draw this shape
@@ -62,8 +66,8 @@ public class VoronoiMeshProject extends PApplet {
 
 	public void mousePressed() {
 		boolean pointAlreadyInList = false;
-		for (int i = 0; i < pointCounter / 2; i++) {
-			if (points[i][0] == mouseX && points[i][1] == mouseY) {
+		for (int i = 0; i < pointCounter; i++) {
+			if (points[i][0] == (float)mouseX && points[i][1] == (float)mouseY) {
 				pointAlreadyInList = true;
 			}
 		}
@@ -71,7 +75,7 @@ public class VoronoiMeshProject extends PApplet {
 		if (pointAlreadyInList == false) {
 			pointsArray.add(pointsArray.size(), (float) mouseX);
 			pointsArray.add(pointsArray.size(), (float) mouseY);
-			pointCounter = pointsArray.size() - 1;
+			pointCounter = pointsArray.size()/2;
 		}
 
 	}
@@ -80,7 +84,8 @@ public class VoronoiMeshProject extends PApplet {
 
 		boolean pointAlreadyInList = false;
 		for (int i = 0; i < pointCounter / 2; i++) {
-			if (points[i][0] == mouseX && points[i][1] == mouseY) {
+			if (points[i][0] == (float)mouseX && points[i][1] == (float)mouseY) {
+				println("point already in array");
 				pointAlreadyInList = true;
 			}
 		}
@@ -92,7 +97,7 @@ public class VoronoiMeshProject extends PApplet {
 			pointsArray.add(pointsArray.size(), (float) mouseX);
 			pointsArray.add(pointsArray.size(), (float) mouseY);
 
-			pointCounter = pointsArray.size() - 1;
+			pointCounter = pointsArray.size()/2;
 		}
 
 	}
